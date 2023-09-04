@@ -17,7 +17,8 @@ class _GameState extends State<Game> {
   late String _curntPlayer;
   late bool _finish;
   late String _win;
-
+  final TextEditingController players1 = TextEditingController();
+  final TextEditingController players2 = TextEditingController();
   @override
   void initState() {
     super.initState();
@@ -31,7 +32,7 @@ class _GameState extends State<Game> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: const Color.fromARGB(255, 116, 119, 142),
+      backgroundColor: const Color.fromARGB(107, 173, 240, 225),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -43,13 +44,26 @@ class _GameState extends State<Game> {
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Text("PLAYER NAME",
-                          style: GoogleFonts.ultra(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w500)),
+                      ShaderMask(
+                        shaderCallback: (rect) => const LinearGradient(
+                          begin: Alignment.bottomLeft,
+                          end: Alignment.topRight,
+                          colors: <Color>[
+                            Color.fromARGB(255, 255, 255, 255),
+                            Color.fromARGB(195, 238, 186, 238),
+                            Color.fromARGB(235, 188, 224, 160),
+                            Color.fromARGB(225, 255, 255, 255)
+                          ],
+                          tileMode: TileMode.mirror,
+                        ).createShader(rect),
+                        child: Text("PLAYER NAME",
+                            style: GoogleFonts.ultra(
+                                color: Colors.white,
+                                fontSize: 28,
+                                fontWeight: FontWeight.w500)),
+                      ),
                       const SizedBox(
-                        width: 10,
+                        width: 30,
                       ),
                       ShaderMask(
                         shaderCallback: (rect) => const LinearGradient(
@@ -64,15 +78,15 @@ class _GameState extends State<Game> {
                         ).createShader(rect),
                         child: Text(
                           _curntPlayer == "X"
-                              ? "${widget.player1}($_curntPlayer)"
-                              : "${widget.player2}($_curntPlayer)",
+                              ? "${widget.player1}  -- $_curntPlayer"
+                              : "${widget.player2}   -- $_curntPlayer",
                           style: GoogleFonts.ultra(
                               color: _curntPlayer == "X"
                                   ? Colors.white
                                   : Colors.white,
 
                               // color:
-                              fontSize: 18,
+                              fontSize: 24,
                               fontWeight: FontWeight.w500),
                         ),
                       ),
@@ -82,7 +96,7 @@ class _GameState extends State<Game> {
               ),
             ),
             SizedBox(
-              height: 350,
+              height: 360,
               child: GridView.builder(
                   physics: const NeverScrollableScrollPhysics(),
                   shrinkWrap: true,
@@ -97,6 +111,7 @@ class _GameState extends State<Game> {
                       child: Container(
                         margin: const EdgeInsets.all(5),
                         decoration: const BoxDecoration(
+                          borderRadius: BorderRadius.all(Radius.circular(28)),
                           color: Color.fromARGB(255, 147, 165, 152),
                         ),
                         child: Center(
@@ -119,17 +134,20 @@ class _GameState extends State<Game> {
               height: 80,
             ),
             Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
                 Container(
                   width: 150,
                   height: 50,
                   decoration: const BoxDecoration(
-                    borderRadius: BorderRadius.all(Radius.circular(24)),
+                    borderRadius: BorderRadius.all(Radius.circular(28)),
                     // color: Color.fromARGB(255, 176, 190, 177),
                   ),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                          shape: const BeveledRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4))),
                           primary: const Color.fromARGB(255, 13, 170, 76)),
                       onPressed: reset,
                       child: Text("Reset",
@@ -145,6 +163,9 @@ class _GameState extends State<Game> {
                   decoration: const BoxDecoration(color: Colors.transparent),
                   child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
+                          shape: const BeveledRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(4))),
                           primary: const Color.fromARGB(255, 222, 78, 68)),
                       onPressed: () {
                         Navigator.pop(
@@ -201,13 +222,32 @@ class _GameState extends State<Game> {
           _xoBoard[2][2] == _curntPlayer) {
         _win = _curntPlayer;
         _finish = true;
+      } else if (_xoBoard[2][2] == _curntPlayer &&
+          _xoBoard[1][1] == _curntPlayer &&
+          _xoBoard[0][0] == _curntPlayer) {
+        _win = _curntPlayer;
+        _finish = true;
       } else if (_xoBoard[0][2] == _curntPlayer &&
           _xoBoard[1][1] == _curntPlayer &&
           _xoBoard[2][0] == _curntPlayer) {
         _win = _curntPlayer;
         _finish = true;
+      } else if (_xoBoard[0][2] == _curntPlayer &&
+          _xoBoard[0][1] == _curntPlayer &&
+          _xoBoard[0][0] == _curntPlayer) {
+        _win = _curntPlayer;
+        _finish = true;
+      } else if (_xoBoard[1][2] == _curntPlayer &&
+          _xoBoard[1][1] == _curntPlayer &&
+          _xoBoard[1][0] == _curntPlayer) {
+        _win = _curntPlayer;
+        _finish = true;
+      } else if (_xoBoard[2][2] == _curntPlayer &&
+          _xoBoard[2][1] == _curntPlayer &&
+          _xoBoard[2][0] == _curntPlayer) {
+        _win = _curntPlayer;
+        _finish = true;
       }
-      //
       //
       _curntPlayer = _curntPlayer == "X" ? "O" : "X";
 
@@ -221,28 +261,53 @@ class _GameState extends State<Game> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text(_win == "X"
-                  ? "${widget.player1}Won"
-                  : _win == "O"
-                      ? "${widget.player2}Won"
-                      : "Won"),
-              content: const Text('Congratulation!'),
+              title: Text(
+                  _win == "X"
+                      ? "${widget.player1}  --  Win"
+                      : _win == "O"
+                          ? "${widget.player2}  -- Win"
+                          : "MATCH TIE",
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.ultra(
+                      color: const Color.fromARGB(255, 0, 0, 0),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500)),
+              content: Text('Congratulation!',
+                  textAlign: TextAlign.center,
+                  style: GoogleFonts.ultra(
+                      color: Color.fromARGB(255, 2, 90, 5),
+                      fontSize: 16,
+                      fontWeight: FontWeight.w500)),
               actions: [
                 Row(
                   children: [
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: const BeveledRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24))),
+                          primary: const Color.fromARGB(255, 71, 222, 68)),
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pop(Game(
+                            player1: players1.text, player2: players2.text));
                       },
                       child: const Text('Retry'),
                     ),
+                    const SizedBox(
+                      width: 50,
+                    ),
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                          shape: const BeveledRectangleBorder(
+                              borderRadius:
+                                  BorderRadius.all(Radius.circular(24))),
+                          primary: const Color.fromARGB(255, 222, 78, 68)),
                       onPressed: () {
                         // Get.to(RoutingXo.game);
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => Home_UI(),
+                              builder: (context) => const Home_UI(),
                             ));
                       },
                       child: const Text('Close'),

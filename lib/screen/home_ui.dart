@@ -20,9 +20,10 @@ class _Home_UIState extends State<Home_UI> {
   Widget build(BuildContext context) {
     return SafeArea(
         child: Scaffold(
-      backgroundColor: const Color.fromARGB(255, 202, 200, 190),
+      backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Container(
+         
           decoration: const BoxDecoration(
               gradient: LinearGradient(
                   begin: Alignment.bottomLeft,
@@ -183,7 +184,7 @@ class _Home_UIState extends State<Home_UI> {
                       }
                     },
                     child: Padding(
-                      padding: const EdgeInsets.only(top: 50),
+                      padding: const EdgeInsets.only(top: 50,bottom: 300),
                       child: Container(
                         width: 200,
                         decoration: BoxDecoration(
