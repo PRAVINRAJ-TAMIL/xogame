@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:xo/screen/home_ui.dart';
+import 'package:xo/utils/Strings.dart';
 
 // ignore: must_be_immutable
 class Game extends StatefulWidget {
@@ -22,7 +23,7 @@ class _GameState extends State<Game> {
   @override
   void initState() {
     super.initState();
-    _curntPlayer = "X";
+    _curntPlayer = StringResourseXo.X;
     _win = "";
     _xoBoard = List.generate(3, (_) => List.generate(3, (_) => ""));
     _finish = false;
@@ -56,7 +57,7 @@ class _GameState extends State<Game> {
                           ],
                           tileMode: TileMode.mirror,
                         ).createShader(rect),
-                        child: Text("PLAYER NAME",
+                        child: Text(StringResourseXo.PLAYERNAME,
                             style: GoogleFonts.ultra(
                                 color: Colors.white,
                                 fontSize: 28,
@@ -77,11 +78,11 @@ class _GameState extends State<Game> {
                           tileMode: TileMode.mirror,
                         ).createShader(rect),
                         child: Text(
-                          _curntPlayer == "X"
+                          _curntPlayer == StringResourseXo.X
                               ? "${widget.player1}  -- $_curntPlayer"
                               : "${widget.player2}   -- $_curntPlayer",
                           style: GoogleFonts.ultra(
-                              color: _curntPlayer == "X"
+                              color: _curntPlayer == StringResourseXo.X
                                   ? Colors.white
                                   : Colors.white,
 
@@ -121,7 +122,7 @@ class _GameState extends State<Game> {
                             style: TextStyle(
                                 fontSize: 90,
                                 fontWeight: FontWeight.w600,
-                                color: _xoBoard[row][colu] == "X"
+                                color: _xoBoard[row][colu] == StringResourseXo.X
                                     ? const Color.fromARGB(255, 109, 5, 40)
                                     : const Color.fromARGB(255, 0, 255, 42)),
                           ),
@@ -147,10 +148,10 @@ class _GameState extends State<Game> {
                       style: ElevatedButton.styleFrom(
                           shape: const BeveledRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(4))),
+                                  BorderRadius.all(Radius.circular(10))),
                           primary: const Color.fromARGB(255, 13, 170, 76)),
                       onPressed: reset,
-                      child: Text("Reset",
+                      child: Text(StringResourseXo.RESET,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.ultra(
                               color: Colors.white,
@@ -165,7 +166,7 @@ class _GameState extends State<Game> {
                       style: ElevatedButton.styleFrom(
                           shape: const BeveledRectangleBorder(
                               borderRadius:
-                                  BorderRadius.all(Radius.circular(4))),
+                                  BorderRadius.all(Radius.circular(10))),
                           primary: const Color.fromARGB(255, 222, 78, 68)),
                       onPressed: () {
                         Navigator.pop(
@@ -175,7 +176,7 @@ class _GameState extends State<Game> {
                         widget.player1 = "";
                         widget.player2 = "";
                       },
-                      child: Text("Restart game",
+                      child: Text(StringResourseXo.RESTARTGAME,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.ultra(
                               color: Colors.white,
@@ -193,7 +194,7 @@ class _GameState extends State<Game> {
 // Gamereset
   void reset() {
     setState(() {
-      _curntPlayer = "X";
+      _curntPlayer = StringResourseXo.X;
       _win = "";
       _finish = false;
       _xoBoard = List.generate(3, (_) => List.generate(3, (_) => ""));
@@ -247,6 +248,11 @@ class _GameState extends State<Game> {
           _xoBoard[2][0] == _curntPlayer) {
         _win = _curntPlayer;
         _finish = true;
+      } else if (_xoBoard[1][0] == _curntPlayer &&
+          _xoBoard[2][1] == _curntPlayer &&
+          _xoBoard[0][2] == _curntPlayer) {
+        _win = _curntPlayer;
+        _finish = true;
       }
       //
       _curntPlayer = _curntPlayer == "X" ? "O" : "X";
@@ -266,13 +272,13 @@ class _GameState extends State<Game> {
                       ? "${widget.player1}  --  Win"
                       : _win == "O"
                           ? "${widget.player2}  -- Win"
-                          : "MATCH TIE",
+                          : StringResourseXo.MATCH,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.ultra(
                       color: const Color.fromARGB(255, 0, 0, 0),
                       fontSize: 16,
                       fontWeight: FontWeight.w500)),
-              content: Text('Congratulation!',
+              content: Text(StringResourseXo.CON,
                   textAlign: TextAlign.center,
                   style: GoogleFonts.ultra(
                       color: Color.fromARGB(255, 2, 90, 5),
@@ -280,37 +286,52 @@ class _GameState extends State<Game> {
                       fontWeight: FontWeight.w500)),
               actions: [
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: const BeveledRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(24))),
-                          primary: const Color.fromARGB(255, 71, 222, 68)),
-                      onPressed: () {
-                        Navigator.of(context).pop(Game(
-                            player1: players1.text, player2: players2.text));
-                      },
-                      child: const Text('Retry'),
+                    SizedBox(
+                      width: 120,
+                      height: 40,
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(24))),
+                            primary: Color.fromARGB(255, 33, 161, 31)),
+                        onPressed: () {
+                          Navigator.of(context).pop(Game(
+                              player1: players1.text, player2: players2.text));
+                        },
+                        child:  Text(StringResourseXo.RETRY, textAlign: TextAlign.center,
+                          style: GoogleFonts.ultra(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500)),
+                      ),
                     ),
-                    const SizedBox(
-                      width: 50,
-                    ),
-                    ElevatedButton(
-                      style: ElevatedButton.styleFrom(
-                          shape: const BeveledRectangleBorder(
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(24))),
-                          primary: const Color.fromARGB(255, 222, 78, 68)),
-                      onPressed: () {
-                        // Get.to(RoutingXo.game);
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const Home_UI(),
-                            ));
-                      },
-                      child: const Text('Close'),
+                    
+                    SizedBox(
+                      width: 120,
+                      height: 40,
+                      child: ElevatedButton(
+                        
+                        style: ElevatedButton.styleFrom(
+                            shape: const RoundedRectangleBorder(
+                                borderRadius:
+                                    BorderRadius.all(Radius.circular(24))),
+                            primary: const Color.fromARGB(255, 222, 78, 68)),
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const Home_UI(),
+                              ));
+                        },
+                        child:  Text(StringResourseXo.CLOSE, textAlign: TextAlign.center,
+                          style: GoogleFonts.ultra(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500)),
+                      ),
                     ),
                   ],
                 ),

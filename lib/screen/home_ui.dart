@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:xo/screen/game.dart';
+import 'package:xo/utils/Strings.dart';
 
 // ignore: camel_case_types
 class Home_UI extends StatefulWidget {
@@ -9,6 +10,7 @@ class Home_UI extends StatefulWidget {
   @override
   State<Home_UI> createState() => _Home_UIState();
 }
+
 
 // ignore: camel_case_types
 class _Home_UIState extends State<Home_UI> {
@@ -50,9 +52,10 @@ class _Home_UIState extends State<Home_UI> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 80),
                     child: Text(
-                      "XO GAME",
+                      StringResourseXo.XO,
                       
-                      style: GoogleFonts.ultra(
+                      style: GoogleFonts. ultra(
+                        // fontFamily:'ultra',
                           color: Colors.white,
                           shadows: <Shadow>[
                             const Shadow(
@@ -85,7 +88,7 @@ class _Home_UIState extends State<Home_UI> {
                   child: Padding(
                     padding: const EdgeInsets.only(top: 100),
                     child: Text(
-                      "Enter Player Name",
+                      StringResourseXo.ENT_PLY_NAME,
                       // Rubik Iso
                       style: GoogleFonts.ultra(
                           color: Colors.white,
@@ -133,7 +136,7 @@ class _Home_UIState extends State<Home_UI> {
                           )),
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return "Enter Player Name 1";
+                          return StringResourseXo.ENTER_PLY_1;
                         }
                         return null;
                       }),
@@ -165,7 +168,7 @@ class _Home_UIState extends State<Home_UI> {
                             )),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return "Enter Player Name 2";
+                            return StringResourseXo.ENTER_PLY_2;
                           }
                           return null;
                         }),
@@ -197,7 +200,7 @@ class _Home_UIState extends State<Home_UI> {
                           borderRadius: BorderRadius.circular(24),
                         ),
                         child: Text(
-                          "Continue",
+                          StringResourseXo.CONTINUE,
                           textAlign: TextAlign.center,
                           style: GoogleFonts.kaushanScript(
                             color: const Color.fromARGB(255, 79, 76, 76),
